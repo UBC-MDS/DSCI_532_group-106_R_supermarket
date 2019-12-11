@@ -246,7 +246,7 @@ app$layout(
                             ),
                             htmlDiv(
                                 list(
-                                    htmlLabel("Select second shift to compare:"),
+                                    htmlLabel("Select first shift to compare:"),
                                     htmlDiv(
                                         list(
                                             day_Dropdown1,
