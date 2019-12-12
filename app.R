@@ -109,7 +109,7 @@ avg_trxn_size_hm <- dccGraph(
 
 avg_cust_sat_hm <- dccGraph(
   id = 'avg_cust_sat_hm',
-  figure = make_heat_map("A", "Customer Satisfaction (out of 10)", cust_sat, mean(Rating))
+  figure = make_heat_map("A", "Average Customer Satisfaction (out of 10)", cust_sat, mean(Rating))
 )
 
 # bar plots
@@ -120,7 +120,7 @@ make_barplot_totalSales <- function(DayofWeek = "Monday", TimeofDay = "Morning",
         group_by(`Product line`) %>%
         summarise(`Sales in MMK` = round(sum(Total), 2)) %>%
         ggplot(aes(x = `Product line`, y = `Sales in MMK`)) +
-            geom_bar(stat = "identity", alpha = 0.8) +
+            geom_bar(stat = "identity", alpha = 0.8, fill = "#6b5b95") +
             theme_bw() +
             theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                   axis.text.x = element_text(angle = 45, hjust = 1),
@@ -137,7 +137,7 @@ make_barplot_cusTraf <- function(DayofWeek = "Monday", TimeofDay = "Morning", br
         group_by(`Product line`) %>%
         summarise(`Transactions` = n()) %>%
         ggplot(aes(x = `Product line`, y = `Transactions`)) +
-            geom_bar(stat = "identity", alpha = 0.8) +
+            geom_bar(stat = "identity", alpha = 0.8, fill = "#feb236") +
             theme_bw() +
             theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                   axis.text.x = element_text(angle = 45, hjust = 1),
@@ -153,7 +153,7 @@ make_barplot_avgTranSize <- function(DayofWeek = "Monday", TimeofDay = "Morning"
         group_by(`Product line`) %>%
         summarise(`Sales in MMK` = round(mean(Total), 2)) %>%
         ggplot(aes(x = `Product line`, y = `Sales in MMK`)) +
-            geom_bar(stat = "identity", alpha = 0.8) +
+            geom_bar(stat = "identity", alpha = 0.8, fill = "#d64161") +
             theme_bw() +
             theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                   axis.text.x = element_text(angle = 45, hjust = 1),
@@ -169,12 +169,12 @@ make_barplot_avgSat <- function(DayofWeek = "Monday", TimeofDay = "Morning", bra
         group_by(`Product line`) %>%
         summarise(`Average Rating` = round(mean(Rating), 2)) %>%
         ggplot(aes(x = `Product line`, y = `Average Rating`)) +
-            geom_bar(stat = "identity", alpha = 0.8) +
+            geom_bar(stat = "identity", alpha = 0.8, fill = "#ff7b25") +
             theme_bw() +
             theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
                   axis.text.x = element_text(angle = 45, hjust = 1),
                   axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
-            labs(title = "Average Satisfaction", y = "Average Rating") 
+            labs(title = "Average Customer Satisfaction", y = "Rating") 
     ggplotly(p, tooltip = c("x", "y"), width = 500, height = 300)
 }
 
@@ -229,7 +229,7 @@ app$layout(
             htmlLabel("Select store:"),
             store_radio_items
         ),
-        style = list("backgroundColor" = "#feea9d")
+        style = list("backgroundColor" = "#DCDCDC")
     ),
     dccTabs(
         id = "tabs", children = list(
@@ -253,11 +253,11 @@ app$layout(
                                     - Are there periods of ***high*** customer traffic but ***low*** average transaction size?
                                         - Would scheduling in extra staff encourage customers to spend more?
 
-                                    **Note:** *Morning* is 9:00-12:59, *Afternoon* is 13:00-16:59 and *Evening* is 17:00-20:59. 
+                                    **Note:** Morning is 9:00-12:59, Afternoon is 13:00-16:59 and Evening is 17:00-20:59. 
                                     "
                                     )
                                 ),
-                                style = list("backgroundColor" = "#bdd3e1")
+                                style = list("backgroundColor" = "#DCDCDC")
                             ), 
                             htmlDiv(
                               list(
@@ -286,11 +286,15 @@ app$layout(
                                     dccMarkdown("
                                     **Purpose:** Compare department-specific performance for a particular day and time to identify when and where to increase/reduce staff.
 
-                                    **Guiding example:** 
+                                    **Guiding example:**
+                                    I'm considering scheduling more people on Sunday evenings. I'm considering adding more staff to the Sports & Travel department where there is the highest
+                                    traffic and lowest satisfaction. Before deciding, I can compare the store performance on Sunday evenings to that of Saturday afternoons. The Sports & Travel department
+                                    seems to also have high customer traffic but much lower average transaction sizes on Saturday afternoons when compared to Sunday evenings. Therefore, I should schedule in
+                                    more staff in the Sports & Travel department on Saturday afternoons in an attempt to boost sales.
                                     "
                                     )
                                 ),
-                                style = list("backgroundColor" = "#FFD89F")
+                                style = list("backgroundColor" = "#DCDCDC")
                             ),
                             htmlDiv(
                                 list(
@@ -368,7 +372,7 @@ app$callback(
   output=list(id = 'avg_cust_sat_hm', property = 'figure'),
   params=list(input(id = 'Store', property='value')),
   function(branch) {
-    make_heat_map(branch, "Customer Satisfaction (out of 10)", cust_sat, mean(Rating))
+    make_heat_map(branch, "Average Customer Satisfaction (out of 10)", cust_sat, mean(Rating))
   })
 
 app$callback(
@@ -443,4 +447,4 @@ app$callback(
     make_barplot_avgSat(DayofWeek, TimeofDay, branch)
   })  
 
-app$run_server()
+app$run_server(host = "0.0.0.0", port = Sys.getenv('PORT', 8050))
