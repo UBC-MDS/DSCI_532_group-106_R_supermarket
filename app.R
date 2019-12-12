@@ -1,10 +1,16 @@
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(readr)
+library(purrr)
+library(tibble)
+library(forcats)
 library(plotly)
 library(RColorBrewer)
-library(cowplot)
+
 
 app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.css")
 
