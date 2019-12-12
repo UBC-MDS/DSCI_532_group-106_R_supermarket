@@ -15,7 +15,7 @@ library(RColorBrewer)
 app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.css")
 
 # Import cleaned data
-df <- read_csv("data/supermarket_sales_clean.csv")
+df <- read_csv("https://raw.githubusercontent.com/UBC-MDS/DSCI_532_group-106_R_supermarket/master/data/supermarket_sales_clean.csv")
 
 # Convert columns into factors
 df <- mutate_at(df, vars(`Branch`, `City`, `Gender`, `Customer type`, `Product line`, 
