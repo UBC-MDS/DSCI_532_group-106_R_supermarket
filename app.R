@@ -76,8 +76,42 @@ time_Dropdown2 <- dccDropdown(
   value = "Morning", #Selects Evening by default
 )
 
-# bar plots
+# heat maps
+make_heat_map <- function(branch, title, col_title, func) {
+    hm <- df %>%
+        filter(Branch == branch) %>%
+        group_by(Day_of_week, Time_of_day) %>%
+        summarize(col_title = {{func}}) %>%
+        ggplot(aes(x = Day_of_week, y = Time_of_day, fill = col_title)) +
+            geom_tile() +
+            scale_fill_distiller(palette = "Greens", direction = 1) +
+            ggtitle(title) +
+            labs(x = "", y = "", fill = "") +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    ggplotly(hm, tooltip = c("x", "y"), width = 500, height = 300)
+}
 
+total_sales_hm <- dccGraph(
+  id = 'total_sales_hm',
+  figure = make_heat_map("A", "Total Sales (in MMK)", total_sales, sum(Total))
+)
+
+cust_traffic_hm <- dccGraph(
+  id = 'cust_traffic_hm',
+  figure = make_heat_map("A", "Customer Traffic (transactions)", traffic, n())
+)
+
+avg_trxn_size_hm <- dccGraph(
+  id = 'avg_trxn_size_hm',
+  figure = make_heat_map("A", "Average Transaction Size (in MMK)", trxn_size, sum(Total) / n())
+)
+
+avg_cust_sat_hm <- dccGraph(
+  id = 'avg_cust_sat_hm',
+  figure = make_heat_map("A", "Customer Satisfaction (out of 10)", cust_sat, mean(Rating))
+)
+
+# bar plots
 # total sales
 make_barplot_totalSales <- function(DayofWeek = "Monday", TimeofDay = "Morning", branch = "A"){
     p <- df %>%
@@ -218,8 +252,16 @@ app$layout(
                                     )
                                 ),
                                 style = list("backgroundColor" = "#bdd3e1")
+                            ), 
+                            htmlDiv(
+                              list(
+                                total_sales_hm,
+                                cust_traffic_hm,
+                                avg_trxn_size_hm,
+                                avg_cust_sat_hm
+                              ),
+                              style = list('columnCount' = 2)
                             )
-
                             # Arrange heat maps here
                         ),
                         className = "container"
@@ -294,6 +336,34 @@ app$layout(
 )
 
 # callback
+
+app$callback(
+  output=list(id = 'total_sales_hm', property = 'figure'),
+  params=list(input(id = 'Store', property='value')),
+  function(branch) {
+    make_heat_map(branch, "Total Sales (in MMK)", total_sales, sum(Total))
+  })
+
+app$callback(
+  output=list(id = 'cust_traffic_hm', property = 'figure'),
+  params=list(input(id = 'Store', property='value')),
+  function(branch) {
+    make_heat_map(branch, "Customer Traffic (transactions)", traffic, n())
+  })
+
+  app$callback(
+  output=list(id = 'avg_trxn_size_hm', property = 'figure'),
+  params=list(input(id = 'Store', property='value')),
+  function(branch) {
+    make_heat_map(branch, "Average Transaction Size (in MMK)", trxn_size, sum(Total) / n())
+  })
+  
+  app$callback(
+  output=list(id = 'avg_cust_sat_hm', property = 'figure'),
+  params=list(input(id = 'Store', property='value')),
+  function(branch) {
+    make_heat_map(branch, "Customer Satisfaction (out of 10)", cust_sat, mean(Rating))
+  })
 
 app$callback(
   output=list(id = 'barplot1_1', property='figure'),
