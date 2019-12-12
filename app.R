@@ -10,7 +10,7 @@ library(tibble)
 library(forcats)
 library(plotly)
 library(RColorBrewer)
-library(cowplot)
+
 
 app <- Dash$new(external_stylesheets = "https://codepen.io/chriddyp/pen/bWLwgP.css")
 
