@@ -88,7 +88,8 @@ make_heat_map <- function(branch, title, col_title, func) {
             ggtitle(title) +
             labs(x = "", y = "", fill = "") +
             theme(axis.text.x = element_text(angle = 45, hjust = 1))
-    ggplotly(hm, tooltip = c("x", "y"), width = 500, height = 300)
+    ggplotly(hm, tooltip = c("x", "y"), width = 500, height = 300) %>%
+      config(displayModeBar = FALSE)
 }
 
 total_sales_hm <- dccGraph(
@@ -118,13 +119,15 @@ make_barplot_totalSales <- function(DayofWeek = "Monday", TimeofDay = "Morning",
         filter(Branch == branch & Day_of_week == DayofWeek & Time_of_day == TimeofDay) %>%
         group_by(`Product line`) %>%
         summarise(`Sales in MMK` = round(sum(Total), 2)) %>%
-        ggplot(aes(x = `Product line`, y = `Sales in MMK`, color = `Product line`, fill = `Product line`)) +
+        ggplot(aes(x = `Product line`, y = `Sales in MMK`)) +
             geom_bar(stat = "identity", alpha = 0.8) +
             theme_bw() +
-            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-                 axis.text.x=element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
+            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                  axis.text.x = element_text(angle = 45, hjust = 1),
+                  axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
             labs(title = "Total Sales", y = "Sales in MMK") 
-    ggplotly(p, tooltip = c("x", "y"), width = 500, height = 300)
+    ggplotly(p, tooltip = c("x", "y"), width = 500, height = 300) %>%
+      config(displayModeBar = FALSE)
 }
 
 # customer Traffic
@@ -133,11 +136,12 @@ make_barplot_cusTraf <- function(DayofWeek = "Monday", TimeofDay = "Morning", br
         filter(Branch == branch & Day_of_week == DayofWeek & Time_of_day == TimeofDay) %>%
         group_by(`Product line`) %>%
         summarise(`Transactions` = n()) %>%
-        ggplot(aes(x = `Product line`, y = `Transactions`, color = `Product line`, fill = `Product line`)) +
+        ggplot(aes(x = `Product line`, y = `Transactions`)) +
             geom_bar(stat = "identity", alpha = 0.8) +
             theme_bw() +
-            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-                 axis.text.x=element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
+            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                  axis.text.x = element_text(angle = 45, hjust = 1),
+                  axis.ticks.x=element_blank(), axis.title.x=element_blank())+
             labs(title = "Customer Traffic", y = "Transactions") 
     ggplotly(p, tooltip = c("x", "y"), width = 500, height = 300)
 }
@@ -148,11 +152,12 @@ make_barplot_avgTranSize <- function(DayofWeek = "Monday", TimeofDay = "Morning"
         filter(Branch == branch & Day_of_week == DayofWeek & Time_of_day == TimeofDay) %>%
         group_by(`Product line`) %>%
         summarise(`Sales in MMK` = round(mean(Total), 2)) %>%
-        ggplot(aes(x = `Product line`, y = `Sales in MMK`, color = `Product line`, fill = `Product line`)) +
+        ggplot(aes(x = `Product line`, y = `Sales in MMK`)) +
             geom_bar(stat = "identity", alpha = 0.8) +
             theme_bw() +
-            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-                 axis.text.x=element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
+            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                  axis.text.x = element_text(angle = 45, hjust = 1),
+                  axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
             labs(title = "Average Transaction Size", y = "Sales in MMK")
     ggplotly(p, tooltip = c("x", "y"), width = 500, height = 300)
 }
@@ -163,11 +168,12 @@ make_barplot_avgSat <- function(DayofWeek = "Monday", TimeofDay = "Morning", bra
         filter(Branch == branch & Day_of_week == DayofWeek & Time_of_day == TimeofDay) %>%
         group_by(`Product line`) %>%
         summarise(`Average Rating` = round(mean(Rating), 2)) %>%
-        ggplot(aes(x = `Product line`, y = `Average Rating`, color = `Product line`, fill = `Product line`)) +
+        ggplot(aes(x = `Product line`, y = `Average Rating`)) +
             geom_bar(stat = "identity", alpha = 0.8) +
             theme_bw() +
-            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-                 axis.text.x=element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
+            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                  axis.text.x = element_text(angle = 45, hjust = 1),
+                  axis.ticks.x=element_blank(), axis.title.x=element_blank()) +
             labs(title = "Average Satisfaction", y = "Average Rating") 
     ggplotly(p, tooltip = c("x", "y"), width = 500, height = 300)
 }
