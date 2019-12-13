@@ -19,15 +19,15 @@ Specifically, our dashboard:
 While our dashboard is minimally viable, it has its limitations. The limitations and potential future improvements we have identified are:
 
 * Summary data of all weeks are displayed instead of allowing users to select the week they want to see.
-  * A supermarket manager may want to see store performance data for a specific week or subset of weeks instead of all historical data to make their decision. This may be a useful functionality if our manager was staffing for Black Friday weekend and wants to see store performance details in previous holiday weekends.
+  * A supermarket manager may want to see store performance data for a specific week or subset of weeks instead of all historical data to make their decision. This may be a useful functionality if our manager was staffing for Black Friday weekend and wanted to see store performance details of previous holiday weekends.
   * Adding this functionality would involve adding a slider at the top of the dashboard that enables users to select the weeks for which they want to see the visualizations on the dashboard.
-* Days of the week and time of day are selected separately and combinations of choices are not possible.
+* Days of the week and times of day are selected separately and combinations of choices are not possible.
   * A supermarket manager may be interested in staffing not only 4 hour shifts but 8 hour shifts which would require analyzing the data by "Morning" and "Afternoon" or "Afternoon" and "Evening".
   * A supermarket manager may also be interested in seeing performance separated by weekend and weekdays which would require selecting multiple days of the week.
   * Implementing this functionality would require changing the drop down selector to a checkbox selector so that users can select multiple days of the week and/or times of the day in the analysis.
 * We also have known issues as we implemented our app in DashR:
   1. Loading lag with top left chart on both tabs: When the app loads, the top left chart is sized smaller but adjusts itself in a few seconds. We do not have a known fix for this problem. 
-  2. Compressed heat map legends: The bottom two charts on the heat maps have legend labels that are not very informative for some selections since there isn't a large enough range in the values. Improving this would require readjusting the legends so that a common scale is used for all charts no matter the selection. 
+  2. Compressed heat map legends: The bottom two charts on the heat maps have legend labels that are not very informative for some selections since there isn't a large enough range in the values. Improving this would require adjusting the legends so that a sufficiently large range of values are reflected. or customer satisfaction, for instance, this may mean setting a common scale of 6 to 10 no matter the selection. 
   3. Tooltip formatting on heat map: The labels reflect the column names which is not easily interpreted by the user. We need to update the tooltip so that it shows the value of the selection. 
-  4. Cannot hide plotly modebar: This is a known issue. While the code for hiding this toolbar works in Jupyter Labs, it does not work when deployed on Dash. We do not have a known fix for this. 
+  4. Cannot hide plotly modebar: This is a known issue and a request has been made to reopen this issue. While the code for hiding this toolbar works in Jupyter Labs, it does not work when deployed on Dash. We do not have a known fix for this. 
   5. Maintaining our code: We have not finished maintaining our code (e.g., adding docstrings) and fully adhering to the tidyverse (e.g., snake case instead of camel case). If we were to work further on our app, this would be an obvious next step. 
